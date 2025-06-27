@@ -19,8 +19,6 @@ Visualize spending and earning patterns with pie charts.
 ✅ **Profile Management**  
 Store and update user details and financial targets.
 
-✅ **Data Persistence**  
-All data is saved to local CSV files and reloaded automatically.
 ---
 
 ## 🛠️ Technologies Used
