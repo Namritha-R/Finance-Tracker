@@ -1,4 +1,4 @@
-#**Finance Tracker**
+#  Finance Tracker
 
 A Java Swing-based desktop application for managing personal income and expenses with data visualization charts.
 
@@ -23,7 +23,7 @@ Store and update user details and financial targets.
 All data is saved to local CSV files and reloaded automatically.
 ---
 
-##**🛠️ Technologies Used**
+## 🛠️ Technologies Used
 
 - **Java 8+**
 - **Swing** – for GUI components
