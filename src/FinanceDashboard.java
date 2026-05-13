@@ -31,7 +31,22 @@ public class FinanceDashboard {
     private static final String EXPENSE_FILE = "expenses.csv";
     private static final String PROFILE_FILE = "profile.txt";
 
+    // Color Palette
+    private static final Color PRIMARY_COLOR = new Color(30, 41, 59); // Slate 800
+    private static final Color SECONDARY_COLOR = new Color(71, 85, 105); // Slate 600
+    private static final Color ACCENT_COLOR = new Color(37, 99, 235); // Blue 600
+    private static final Color BG_COLOR = new Color(248, 250, 252); // Slate 50
+    private static final Color CARD_BG_COLOR = Color.WHITE;
+    private static final Color TEXT_COLOR = new Color(15, 23, 42); // Slate 900
+    private static final Color SUCCESS_COLOR = new Color(16, 185, 129); // Emerald 500
+    private static final Color DANGER_COLOR = new Color(239, 68, 68); // Rose 500
+
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         SwingUtilities.invokeLater(FinanceDashboard::new);
     }
 
@@ -46,17 +61,17 @@ public class FinanceDashboard {
 
         // Header
         JPanel header = new JPanel();
-        header.setBackground(new Color(46, 49, 72));
+        header.setBackground(PRIMARY_COLOR);
         JLabel title = new JLabel("💼 Personal Finance Tracker");
         title.setForeground(Color.WHITE);
-        title.setFont(new Font("SansSerif", Font.BOLD, 22));
+        title.setFont(new Font("Segoe UI", Font.BOLD, 22));
         header.add(title);
         frame.add(header, BorderLayout.NORTH);
 
         // Sidebar
         JPanel sidebar = new JPanel();
-        sidebar.setLayout(new GridLayout(4, 1, 10, 10));
-        sidebar.setBackground(new Color(46, 49, 72));
+        sidebar.setLayout(new GridLayout(4, 1, 5, 5));
+        sidebar.setBackground(PRIMARY_COLOR);
         sidebar.setPreferredSize(new Dimension(180, 0));
 
         JButton homeButton = createSidebarButton("🏠 Home");
@@ -97,17 +112,17 @@ public class FinanceDashboard {
         JButton btn = new JButton(text);
         btn.setFocusPainted(false);
         btn.setForeground(Color.WHITE);
-        btn.setBackground(new Color(72, 79, 109));
-        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
+        btn.setBackground(SECONDARY_COLOR);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btn.setBorderPainted(false);
         btn.setOpaque(true);
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(95, 104, 140));
+                btn.setBackground(ACCENT_COLOR);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn.setBackground(new Color(72, 79, 109));
+                btn.setBackground(SECONDARY_COLOR);
             }
         });
         return btn;
@@ -115,25 +130,26 @@ public class FinanceDashboard {
 
     private void initHomePanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(BG_COLOR);
 
         JPanel stats = new JPanel();
-        stats.setBackground(Color.WHITE);
-        stats.setLayout(new FlowLayout());
+        stats.setBackground(BG_COLOR);
+        stats.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15));
 
-        incomeLabel = createStatLabel("Total Income: ₹0.00");
-        expenseLabel = createStatLabel("Total Expenses: ₹0.00");
-        balanceLabel = createStatLabel("Balance: ₹0.00");
-        budgetLabel = createStatLabel("Remaining Budget: ₹0.00");
+        incomeLabel = new JLabel("₹0.00");
+        expenseLabel = new JLabel("₹0.00");
+        balanceLabel = new JLabel("₹0.00");
+        budgetLabel = new JLabel("₹0.00");
 
-        stats.add(incomeLabel);
-        stats.add(expenseLabel);
-        stats.add(balanceLabel);
-        stats.add(budgetLabel);
+        stats.add(createCard("Total Income", incomeLabel, CARD_BG_COLOR, SUCCESS_COLOR));
+        stats.add(createCard("Total Expenses", expenseLabel, CARD_BG_COLOR, DANGER_COLOR));
+        stats.add(createCard("Net Balance", balanceLabel, CARD_BG_COLOR, ACCENT_COLOR));
+        stats.add(createCard("Remaining Budget", budgetLabel, CARD_BG_COLOR, TEXT_COLOR));
         panel.add(stats, BorderLayout.NORTH);
 
-        JPanel charts = new JPanel(new GridLayout(1, 2));
-        charts.setBackground(Color.WHITE);
+        JPanel charts = new JPanel(new GridLayout(1, 2, 15, 15));
+        charts.setBackground(BG_COLOR);
+        charts.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
         charts.add(createChartPanel(incomeList, "Income"));
         charts.add(createChartPanel(expenseList, "Expenses"));
         panel.add(charts, BorderLayout.CENTER);
@@ -141,12 +157,55 @@ public class FinanceDashboard {
         contentPanel.add(panel, "Home");
     }
 
-    private JLabel createStatLabel(String text) {
-        JLabel lbl = new JLabel(text);
-        lbl.setForeground(Color.BLACK);
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 16));
-        lbl.setBorder(new EmptyBorder(10, 10, 10, 10));
-        return lbl;
+    private JPanel createCard(String title, JLabel valueLabel, Color bgColor, Color textColor) {
+        JPanel card = new JPanel(new BorderLayout());
+        card.setBackground(bgColor);
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(226, 232, 240), 1),
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        ));
+        card.setPreferredSize(new Dimension(220, 100));
+
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        titleLabel.setForeground(SECONDARY_COLOR);
+
+        valueLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        valueLabel.setForeground(textColor);
+
+        card.add(titleLabel, BorderLayout.NORTH);
+        card.add(valueLabel, BorderLayout.CENTER);
+        return card;
+    }
+
+    private void styleTable(JTable table) {
+        table.setRowHeight(30);
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        table.getTableHeader().setBackground(PRIMARY_COLOR);
+        table.getTableHeader().setForeground(Color.WHITE);
+        table.setSelectionBackground(new Color(219, 234, 254));
+        table.setSelectionForeground(TEXT_COLOR);
+        table.setShowVerticalLines(false);
+        table.setGridColor(new Color(226, 232, 240));
+    }
+
+    private void styleTextField(JTextField field) {
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        field.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(226, 232, 240), 1),
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+    }
+
+    private void styleButton(JButton btn, Color bgColor, Color fgColor) {
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setBackground(bgColor);
+        btn.setForeground(fgColor);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private void initIncomePanel() {
@@ -155,12 +214,15 @@ public class FinanceDashboard {
         incomeTableModel = new DefaultTableModel(new Object[]{"Date", "Category", "Amount"}, 0);
         incomeTable = new JTable(incomeTableModel);
         incomeTable.setAutoCreateRowSorter(true);
+        styleTable(incomeTable);
         JScrollPane scroll = new JScrollPane(incomeTable);
         panel.add(scroll, BorderLayout.CENTER);
 
         JPanel top = new JPanel();
         JTextField searchField = new JTextField(15);
+        styleTextField(searchField);
         JButton searchBtn = new JButton("Search");
+        styleButton(searchBtn, ACCENT_COLOR, Color.WHITE);
         top.add(new JLabel("Search:"));
         top.add(searchField);
         top.add(searchBtn);
@@ -179,12 +241,18 @@ public class FinanceDashboard {
         JPanel bottom = new JPanel();
 
         JTextField dateField = new JTextField(8);
+        styleTextField(dateField);
         JTextField categoryField = new JTextField(8);
+        styleTextField(categoryField);
         JTextField amountField = new JTextField(6);
+        styleTextField(amountField);
 
         JButton addBtn = new JButton("Add Income");
+        styleButton(addBtn, SUCCESS_COLOR, Color.WHITE);
         JButton deleteBtn = new JButton("Delete Selected");
+        styleButton(deleteBtn, DANGER_COLOR, Color.WHITE);
         JButton chartBtn = new JButton("Show Chart");
+        styleButton(chartBtn, SECONDARY_COLOR, Color.WHITE);
 
         bottom.add(new JLabel("Date (YYYY-MM-DD):"));
         bottom.add(dateField);
@@ -242,12 +310,15 @@ public class FinanceDashboard {
         expenseTableModel = new DefaultTableModel(new Object[]{"Date", "Category", "Amount"}, 0);
         expenseTable = new JTable(expenseTableModel);
         expenseTable.setAutoCreateRowSorter(true);
+        styleTable(expenseTable);
         JScrollPane scroll = new JScrollPane(expenseTable);
         panel.add(scroll, BorderLayout.CENTER);
 
         JPanel top = new JPanel();
         JTextField searchField = new JTextField(15);
+        styleTextField(searchField);
         JButton searchBtn = new JButton("Search");
+        styleButton(searchBtn, ACCENT_COLOR, Color.WHITE);
         top.add(new JLabel("Search:"));
         top.add(searchField);
         top.add(searchBtn);
@@ -266,12 +337,18 @@ public class FinanceDashboard {
         JPanel bottom = new JPanel();
 
         JTextField dateField = new JTextField(8);
+        styleTextField(dateField);
         JTextField categoryField = new JTextField(8);
+        styleTextField(categoryField);
         JTextField amountField = new JTextField(6);
+        styleTextField(amountField);
 
         JButton addBtn = new JButton("Add Expense");
+        styleButton(addBtn, DANGER_COLOR, Color.WHITE);
         JButton deleteBtn = new JButton("Delete Selected");
+        styleButton(deleteBtn, DANGER_COLOR, Color.WHITE);
         JButton chartBtn = new JButton("Show Chart");
+        styleButton(chartBtn, SECONDARY_COLOR, Color.WHITE);
 
         bottom.add(new JLabel("Date (YYYY-MM-DD):"));
         bottom.add(dateField);
@@ -363,16 +440,16 @@ public class FinanceDashboard {
         double income = incomeList.stream().mapToDouble(t -> t.amount).sum();
         double expense = expenseList.stream().mapToDouble(t -> t.amount).sum();
         double balance = income - expense;
-        incomeLabel.setText("Total Income: ₹" + String.format("%.2f", income));
-        expenseLabel.setText("Total Expenses: ₹" + String.format("%.2f", expense));
-        balanceLabel.setText("Balance: ₹" + String.format("%.2f", balance));
+        incomeLabel.setText("₹" + String.format("%.2f", income));
+        expenseLabel.setText("₹" + String.format("%.2f", expense));
+        balanceLabel.setText("₹" + String.format("%.2f", balance));
         
         double remainingBudget = profile.monthlyBudget - expense;
-        budgetLabel.setText("Remaining Budget: ₹" + String.format("%.2f", remainingBudget));
+        budgetLabel.setText("₹" + String.format("%.2f", remainingBudget));
         if (remainingBudget < 0) {
-            budgetLabel.setForeground(Color.RED);
+            budgetLabel.setForeground(DANGER_COLOR);
         } else {
-            budgetLabel.setForeground(Color.BLACK);
+            budgetLabel.setForeground(TEXT_COLOR);
         }
     }
 
@@ -450,6 +527,10 @@ public class FinanceDashboard {
                 avgIncomeField, avgExpenseField, targetSavingsField, monthlyBudgetField
         };
 
+        for (JTextField f : fields) {
+            styleTextField(f);
+        }
+
         for (int i = 0; i < labels.length; i++) {
             gbc.gridx = 0;
             gbc.gridy = i+1;
@@ -462,6 +543,7 @@ public class FinanceDashboard {
         }
 
         JButton saveBtn = new JButton("Save Profile");
+        styleButton(saveBtn, ACCENT_COLOR, Color.WHITE);
         gbc.gridx = 0;
         gbc.gridy = labels.length+1;
         gbc.gridwidth = 2;
