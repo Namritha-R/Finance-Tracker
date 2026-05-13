@@ -1,17 +1,25 @@
-# Finance Tracker
+# 💼 Finance Tracker
 
-A personal finance tracker application built with Java Swing. This application helps users track their income and expenses, view breakdowns via charts, and manage their financial profile.
+A Java Swing-based desktop application for managing personal income and expenses with data visualization charts.
 
-## Features
+---
 
-### Existing Features
-- **Income Tracking**: Add and delete income records.
-- **Expense Tracking**: Add and delete expense records.
-- **Visual Breakdown**: Pie charts showing income and expense categories (powered by JFreeChart).
-- **Profile Management**: Save user details such as name, email, and target savings.
-- **Persistence**: Data is saved to CSV files (`income.csv`, `expenses.csv`) and a text file (`profile.txt`).
+## ✨ Features
 
-### New & Improved Features
+✅ **Dark-Themed Sidebar & Modern Layout**  
+A modern and intuitive layout with a dark sidebar and light content panels.
+
+✅ **Income & Expense Tracking**  
+- Add, delete, and view transactions.
+- Automatically calculate total income, expenses, and balance.
+
+✅ **Visual Breakdown Charts**  
+Visualize spending and earning patterns with pie charts (powered by JFreeChart).
+
+✅ **Profile Management**  
+Store and update user details and financial targets.
+
+### 🚀 New & Improved Features
 - **Table Sorting**: Click on table headers in Income and Expenses tabs to sort data.
 - **Date Validation**: Enforces `YYYY-MM-DD` format for date inputs to prevent errors.
 - **Budget Tracking**:
@@ -20,11 +28,17 @@ A personal finance tracker application built with Java Swing. This application h
     - Visual warning (Red text) when the budget is exceeded.
 - **Search/Filter**: Search bar added to Income and Expenses tabs to filter transactions by keyword.
 
-## Technologies Used
-- Java (Swing for GUI)
-- JFreeChart (for rendering charts)
+---
 
-## How to Run
+## 🛠️ Technologies Used
+
+- **Java 8+**
+- **Swing** – for GUI components
+- **JFreeChart** – for charting
+
+---
+
+## 🚀 How to Run
 
 ### Prerequisites
 - Java Development Kit (JDK) installed.
@@ -43,7 +57,9 @@ A personal finance tracker application built with Java Swing. This application h
    java -cp ".;lib/*;out" FinanceDashboard
    ```
 
-## Project Structure
+---
+
+## 📁 Project Structure
 - `src/`: Contains the Java source code (`FinanceDashboard.java`).
 - `lib/`: Contains external JAR files for JFreeChart.
 - `out/`: Compiled class files.
